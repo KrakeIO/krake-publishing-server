@@ -22,11 +22,11 @@ class NetworkPublisher
   publish: (options, data_object, callback)->
     
     # Writes record into MySql
-    if options && options.rdbParams && options.columns
+    if options && options.rdbParams
       rdbParams = options.rdbParams
       rdbParams.origin_url = options.origin_url      
-      rdbParams.columns = options.rawSchema.columns || options.columns || []
-      rdbParams.data = options.rawSchema.data || options.data || []
+      rdbParams.columns = options.rawSchema?.columns || options.columns || []
+      rdbParams.data = options.rawSchema?.data || options.data || []
       
       # ensures only one handler is created for each database
       rdb_key = rdbParams.host + '_' + rdbParams.database + '_' + rdbParams.tableName
@@ -36,22 +36,19 @@ class NetworkPublisher
       rbd_handlers[rdb_key].publish data_object
       callback && callback 'Publisher : Published ' + kson.stringify(data_object) + ' to MySql', 'information'
     
-    
-      
     # Writes record into Postgresql HStore
-    if options && options.pgParams && options.columns
+    if options && options.pgParams
       console.log '[NETWORK_PUBLISHER] Publishing to PostGresql'
       pgParams = options.pgParams
       pgParams.origin_url = options.origin_url
-      pgParams.columns = options.rawSchema.columns || options.columns || []
-      pgParams.permuted_columns = options.rawSchema.permuted_columns || options.permuted_columns || []
-      pgParams.data = options.rawSchema.data || options.data || []
+      pgParams.columns = options.rawSchema?.columns || options.columns || []
+      pgParams.permuted_columns = options.rawSchema?.permuted_columns || options.permuted_columns || []
+      pgParams.data = options.rawSchema?.data || options.data || []
 
       # ensures only one handler is created for each database
       pg_key = pgParams.host + '_' + pgParams.database + '_' + pgParams.tableName
       if !pg_handlers[pg_key] 
         pg_handlers[pg_key] = new PgHandler pgParams
-
       pg_handlers[pg_key].publish data_object
       callback && callback 'Publisher : Published ' + kson.stringify(data_object) + ' to Data Server', 'information'
 
@@ -59,8 +56,8 @@ class NetworkPublisher
     if options && options.mongoParams
       mongoParams = options.mongoParams
       mongoParams.origin_url = options.origin_url
-      mongoParams.columns = options.rawSchema.columns || options.columns || []
-      mongoParams.data = options.rawSchema.data || options.data
+      mongoParams.columns = options.rawSchema?.columns || options.columns || []
+      mongoParams.data = options.rawSchema?.data || options.data
       
       # ensures only one handler is created for each database
       mongo_key = mongoParams.host + '_' + mongoParams.database + '_' + mongoParams.collection

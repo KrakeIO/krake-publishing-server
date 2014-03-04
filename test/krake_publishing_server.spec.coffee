@@ -9,7 +9,7 @@ describe "KrakePublishingServer", ->
   afterEach ->
     app.close()
 
-  it "should publish record successfully to Postgres HSTORE database", (done)->
+  it "should publish record successfully to database", (done)->
 
     # Test case 6: Test data from meetup.com
     data_object =
@@ -33,6 +33,19 @@ describe "KrakePublishingServer", ->
 
 
     schema = require './fixtures/json/schema'
+    @publisher.publish schema, data_object, (message, type)=>
+      response = {}
+      response.message = message
+      response.type = type
+      done()
+
+  it "should publish permuted record successfully to data server", (done)->
+    data_object =
+      measurement: "large"
+      color: "black"
+      enlarged_image: "http://some_url"
+      stock: 200
+    schema = require './fixtures/json/schema_permuted'
     @publisher.publish schema, data_object, (message, type)=>
       response = {}
       response.message = message
