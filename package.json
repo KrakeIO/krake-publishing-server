@@ -1,0 +1,18 @@
+{
+    "author": "Gary Teh <garyjob@gmail.com>",
+    "name": "krake-publishing-server"
+  , "main": "./krake_publishing_server.coffee"
+  , "version": "0.0.1"
+  , "private": true
+  , "engines": {
+    "node": "=0.6.11"
+  }  
+  , "dependencies": {
+      "express": "2.5.7"
+    , "krake-toolkit": "0.0.14"      
+    , "kson": "https://github.com/KrakeIO/kson/tarball/master"
+    , "request": ""
+    , "pg": ""
+    , "pg-hstore": ""    
+  }
+}

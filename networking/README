@@ -1,0 +1,17 @@
+Overview of networking object types
+======================================================================
+File://network_master.coffee
+  Description: This application takes a task and dishes it to the queue
+    listens for individual task results in its own channel flag
+    listens for all subtask completion in its own channel flag
+    does not care how the task is split up
+    just wants the output in the format it ask for
+
+File://network_publisher.coffee
+  Description: This application takes a JSON data object and sends it to a destination URL. 
+
+File://network_supervisor.coffee
+  Description: This application spawns ec2 instances on AWS
+    boots up slave script
+    boots up master/cronjob scripts
+    kills on instances on AWS
