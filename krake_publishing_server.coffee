@@ -26,6 +26,10 @@ app.post '/publish', (req, res)->
   task_info_obj = req.body.task_info_obj
   interim_result_obj = req.body.interim_result_obj
   console.log '[SERVER_PUBLISHING] Publishing new record'
+  for colname, colval of interim_result_obj
+    console.log '  column'
+    console.log '    colname : %s', colname
+    console.log '    colval  : %s', colval
   # console.log task_info_obj
   # console.log interim_result_obj
   
