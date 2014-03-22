@@ -9,7 +9,7 @@
   }  
   , "dependencies": {
       "express": "2.5.7"
-    , "krake-toolkit": "0.0.14"      
+    , "krake-toolkit": "https://github.com/KrakeIO/krake-toolkit/tarball/master"
     , "kson": "https://github.com/KrakeIO/kson/tarball/master"
     , "request": ""
     , "pg": ""
