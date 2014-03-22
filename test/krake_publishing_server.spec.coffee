@@ -1,53 +1,75 @@
-app = require '../krake_publishing_server'
-NetworkPublisher = require '../networking/network_publisher'
+app = require "../krake_publishing_server"
+request = require "request"
+PgHandler = require('krake-toolkit').data.pg_handler
 
 describe "KrakePublishingServer", ->
-  beforeEach ->
-    @publisher = new NetworkPublisher()
+  beforeEach (done)->
     app.listen 9806
+    @payload = require "./fixtures/json/payload_with_index"
+    @updated_payload = require "./fixtures/json/updated_payload_with_index"
 
-  afterEach ->
+    connection_query = require "./fixtures/json/connection_query_with_index"
+    @pg_handler = new PgHandler connection_query, ()=>
+      done()
+
+  afterEach (done)->
     app.close()
-
-  it "should publish record successfully to database", (done)->
-
-    # Test case 6: Test data from meetup.com
-    data_object =
-      group_url: 'http://www.meetup.com/SingaporeMobileDevelopers/'
-      region: 'Singapore'
-      locality: 'Singapore'
-      group_name: 'Singapore Mobile Developers Meetup'
-      members_listing_url: 'http://www.meetup.com/SingaporeMobileDevelopers/members/'
-      developer_profile_url: 'http://www.meetup.com/SingaporeMobileDevelopers/members/77169482/'
-      developer_name: 'Anna Pikina'
-      facebook_url: 'http://www.facebook.com/anna.pikina'
-      linked_url: 'http://www.linkedin.com/in/annapikina'
-      location: 'Singapore'
-      profile_intro_1: 'Networks'
-      profile_intro_2: 'Introduction\n\nHello, I am Sales Director - APAC for Airpush - second largest android network, operating on Push notifications technology and in-app formats. Passionate about mobile, been in the industry for 7 years.'
-      profile_intro_3: 'Why do you like mobile applications?\n\n they allow you to do everything on the go, and are quite entertaining for couch potatos'
-      linkedin_recent_job_title: 'Sales Director'
-      linkedin_recent_company_name: 'Airpush, Inc.'
-      linkedin_recent_company_url: 'http://www.linkedin.com/company/airpush-inc.?trk=ppro_cprof'
-      linkedin_recent_company_description: 'Named "Best Mobile Ad Network" at the 2012 Mobile Excellence Awards, Airpush is on a mission to redefine mobile advertising for publishers and advertisers. Over 50,000 apps and 2,000 advertisers rely on Airpush to deliver the industry\'s highest performance, driven by exceptional ad formats and ...more'
-
-
-    schema = require './fixtures/json/schema'
-    @publisher.publish schema, data_object, (message, type)=>
-      response = {}
-      response.message = message
-      response.type = type
+    @pg_handler.trucateTable ()=>
       done()
 
-  it "should publish permuted record successfully to data server", (done)->
-    data_object =
-      measurement: "large"
-      color: "black"
-      enlarged_image: "http://some_url"
-      stock: 200
-    schema = require './fixtures/json/schema_permuted'
-    @publisher.publish schema, data_object, (message, type)=>
-      response = {}
-      response.message = message
-      response.type = type
-      done()
+  it "should publish a record to a repository successfully", (done)->
+    payload = 
+    options = 
+      method: 'POST'  
+      url : 'http://localhost:9806/publish'
+      json : @payload
+
+    request options, (error, response, body)=>
+      expect(error).toBe null
+      expect(response.statusCode).toEqual 200
+      setTimeout ()=>
+        @pg_handler.fetchRecords (records)=>
+          expect(records.length).toEqual 1
+          expect(records[0]["year"]).toEqual '2011'
+          done()        
+      , 500
+
+  it "should update a record at a repository successfully", (done)->
+    options = 
+      method: 'POST'  
+      url : 'http://localhost:9806/publish'
+      json : @payload
+
+    request options, (error, response, body)=>
+      expect(error).toBe null
+      expect(response.statusCode).toEqual 200
+
+      setTimeout ()=>
+        @pg_handler.fetchRecords (records)=>
+          expect(records.length).toEqual 1
+          expect(records[0]["year"]).toEqual '2011'
+
+          options = 
+            method: 'POST'  
+            url : 'http://localhost:9806/publish'
+            json : @updated_payload
+
+          request options, (error2, response2, body2)=>
+            expect(error2).toBe null
+            expect(response2.statusCode).toEqual 200
+
+            setTimeout ()=>
+              @pg_handler.fetchRecords (records)=>
+                console.log records
+                expect(records.length).toEqual 1
+                expect(records[0]["year"]).toEqual '2021'
+                done()                
+            , 500
+
+      , 500
+
+
+
+
+
+

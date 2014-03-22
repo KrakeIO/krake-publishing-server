@@ -26,7 +26,6 @@ app.post '/publish', (req, res)->
   task_info_obj       = req.body.task_info_obj
   interim_result_obj  = req.body.interim_result_obj
   console.log '[SERVER_PUBLISHING] Publishing new record'
-  console.log kson.stringify(req.body)
 
   for colname, colval of interim_result_obj
     console.log '  column'

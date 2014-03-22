@@ -41,8 +41,8 @@ class NetworkPublisher
       console.log '[NETWORK_PUBLISHER] Publishing to PostGresql'
       pgParams = options.pgParams
       pgParams.origin_url = options.origin_url
-      pgParams.columns = options.rawSchema?.columns || options.columns || []
-      pgParams.permuted_columns = options.rawSchema?.permuted_columns || options.permuted_columns || []
+      pgParams.columns = options.rawSchema?.columns || options.columns
+      pgParams.permuted_columns = options.rawSchema?.permuted_columns || options.permuted_columns
       pgParams.data = options.rawSchema?.data || options.data || []
 
       # ensures only one handler is created for each database
