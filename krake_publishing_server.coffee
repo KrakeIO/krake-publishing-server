@@ -26,12 +26,12 @@ app.post '/publish', (req, res)->
   task_info_obj       = req.body.task_info_obj
   interim_result_obj  = req.body.interim_result_obj
 
-  # console.log '  Publishing new record'
+  console.log '  Publishing new record'
 
-  # for colname, colval of interim_result_obj
-  #   console.log '  column'
-  #   console.log '    colname : %s', colname
-  #   console.log '    colval  : %s', colval
+  for colname, colval of interim_result_obj
+    console.log '  column'
+    console.log '    colname : %s', colname
+    console.log '    colval  : %s', colval
   
   publisher = new NetworkPublisher() 
   publisher.publish task_info_obj, interim_result_obj, (message, type)=>
