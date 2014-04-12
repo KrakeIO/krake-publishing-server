@@ -26,8 +26,12 @@ app.post '/publish', (req, res)->
   task_info_obj       = req.body.task_info_obj
   interim_result_obj  = req.body.interim_result_obj
 
+  console.log "\r\n\r\n\r\n"
   console.log '[SERVER_PUBLISHING] task_info_obj'
   console.log task_info_obj
+
+  console.log '  rawSchema'
+  console.log task_info_obj.rawSchema
 
   console.log '  Publishing new record'
 
