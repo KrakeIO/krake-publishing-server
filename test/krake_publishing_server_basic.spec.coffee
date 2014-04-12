@@ -2,12 +2,10 @@ app = require "../krake_publishing_server"
 request = require "request"
 PgHandler = require('krake-toolkit').data.pg_handler
 
-describe "KrakePublishingServer", ->
+describe "KrakePublishingServer basic", ->
+
   beforeEach (done)->
     app.listen 9806
-    @payload = require "./fixtures/json/payload_with_index"
-    @updated_payload = require "./fixtures/json/updated_payload_with_index"
-
     connection_query = require "./fixtures/json/connection_query_with_index"
     @pg_handler = new PgHandler connection_query, ()=>
       done()
@@ -18,11 +16,10 @@ describe "KrakePublishingServer", ->
       done()
 
   it "should publish a record to a repository successfully", (done)->
-    payload = 
     options = 
       method: 'POST'  
       url : 'http://localhost:9806/publish'
-      json : @payload
+      json : require "./fixtures/json/payload_with_index"
 
     request options, (error, response, body)=>
       expect(error).toBe null
@@ -38,7 +35,7 @@ describe "KrakePublishingServer", ->
     options = 
       method: 'POST'  
       url : 'http://localhost:9806/publish'
-      json : @payload
+      json : require "./fixtures/json/payload_with_index"
 
     request options, (error, response, body)=>
       expect(error).toBe null
@@ -52,7 +49,7 @@ describe "KrakePublishingServer", ->
           options = 
             method: 'POST'  
             url : 'http://localhost:9806/publish'
-            json : @updated_payload
+            json : require "./fixtures/json/updated_payload_with_index"
 
           request options, (error2, response2, body2)=>
             expect(error2).toBe null
@@ -67,9 +64,3 @@ describe "KrakePublishingServer", ->
             , 500
 
       , 500
-
-
-
-
-
-

@@ -18,7 +18,7 @@ payload =
               required_attribute: "href",
               options: {
                   columns: [{
-                      "col_name": "stock number",
+                      "col_name": "stock_number",
                       "is_index": true,
                       "dom_query": ".detailstitle:contains('Stock#')+span"
                   },{
@@ -39,7 +39,7 @@ payload =
               condition: "used",
               pingedAt: "2014-03-22 04:39:25"
       columns: [{
-          "col_name": "stock number"
+          "col_name": "stock_number"
           "is_index": true
           "dom_query": ".detailstitle:contains('Stock#')+span"
       },{
@@ -71,7 +71,7 @@ payload =
       "vehicle url": "http://www.marionford.com/Used-2011-Ford-Taurus-SEL-Marion-IL/vd/19049660",
       make: "Ford",
       model: "2011 Ford Taurus SEL - Marion, IL",
-      "stock number": "AA8816",
+      "stock_number": "AA8816",
       year: "2011"
 
 module.exports = payload
