@@ -6,6 +6,7 @@ payload =
     origin_url: "http://www.marionford.com/inventory/newsearch/Used/"
     stock_number: "Honda Civic 2013"
     make: "4000"
+    model: "slow runny"
     detail_page: "http://car_detail_page"    
 
   task_info_obj:
@@ -13,27 +14,27 @@ payload =
     
     origin_url: "http://car_detail_page"
     columns: [{
-      col_name: "stock_number"
-      is_index: true
-      dom_query: ".detailstitle:contains('Stock#')+span"
-    },{      
-      col_name: "make"
-      dom_query: "h1 .cardata"
+      col_name: "vehicle_url"
+      dom_query: ".vehicletitle a"
     }]
 
     rawSchema:
       columns: [{
-        col_name: "vehicle_url"
-        dom_query: ".vehicletitle a"
+        col_name: "make"
+        is_index: true        
+        dom_query: "h1 .cardata"        
         required_attribute: "href"
         options:
           columns: [{
             col_name: "stock_number"
-            is_index: true
-            dom_query: ".detailstitle:contains('Stock#')+span"
-          },{
-            col_name: "make"
-            dom_query: "h1 .cardata"
+            dom_query: ".vehicletitle a"
+            is_index: true      
+            required_attribute: "href"
+            options:
+              columns:[{
+                col_name: "vehicle_url"
+                dom_query: ".vehicletitle a"
+              }]
           }]
       }],
       data:
