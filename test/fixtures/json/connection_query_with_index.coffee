@@ -12,12 +12,10 @@ query =
       dom_query: ".detailstitle:contains('Stock#')+span"
     },{
       col_name: "year",
-      dom_query: "h1 .cardata",
-      regex_pattern: {}
+      dom_query: "h1 .cardata"
     },{
       col_name: "make",
-      dom_query: "h1 .cardata",
-      regex_pattern: {}
+      dom_query: "h1 .cardata"
     },{
       col_name: "model",
       dom_query: "h1 .cardata"

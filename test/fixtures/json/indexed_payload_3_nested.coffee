@@ -14,26 +14,26 @@ payload =
     origin_url: "http://car_detail_page"
     columns: [{
       col_name: "stock_number"
+      dom_query: ".vehicletitle a"
       is_index: true
-      dom_query: ".detailstitle:contains('Stock#')+span"
-    },{      
-      col_name: "make"
-      dom_query: "h1 .cardata"
     }]
 
     rawSchema:
       columns: [{
-        col_name: "vehicle_url"
-        dom_query: ".vehicletitle a"
+        col_name: "make"
+        dom_query: "h1 .cardata"        
         required_attribute: "href"
         options:
           columns: [{
-            col_name: "stock_number"
-            is_index: true
-            dom_query: ".detailstitle:contains('Stock#')+span"
-          },{
-            col_name: "make"
-            dom_query: "h1 .cardata"
+            col_name: "vehicle_url"
+            dom_query: ".vehicletitle a"
+            required_attribute: "href"
+            options:
+              columns:[{
+                col_name: "stock_number"
+                dom_query: ".vehicletitle a"
+                is_index: true
+              }]
           }]
       }],
       data:

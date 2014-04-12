@@ -1,17 +1,21 @@
 query = 
   username: "test"
   password: "test"
-  tableName: "kpp_test_table_1"
+  tableName: "kpp_test_table_2"
   host: 
     url: "localhost"
     port: "5432"
   database: "scraped_data_repo_test"
   columns: [{
       col_name: "stock_number"
-      is_index: true
       dom_query: ".detailstitle:contains('Stock#')+span"
+      is_index: true      
     },{
       col_name: "make"
+      dom_query: "h1 .cardata"
+      is_index: true
+    },{
+      col_name: "model"
       dom_query: "h1 .cardata"
     },{
       col_name: "vehicle_url"
