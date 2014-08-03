@@ -14,5 +14,7 @@
     , "request": ""
     , "pg": ""
     , "pg-hstore": ""    
+    , "mongoose": ""
+    , "sequelize": ""    
   }
 }

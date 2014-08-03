@@ -26,7 +26,7 @@ app.post '/publish', (req, res)->
   task_info_obj       = req.body.task_info_obj
   interim_result_obj  = req.body.interim_result_obj
 
-  console.log '  Publishing new record'
+  console.log "[KRAKE PUBLISHING SERVER] #{new Date()} : Publishing transaction started"
 
   for colname, colval of interim_result_obj
     console.log '  column'
@@ -39,6 +39,7 @@ app.post '/publish', (req, res)->
     response.message = message
     response.type = type
     res.send response
+    console.log "[KRAKE PUBLISHING SERVER] #{new Date()} : Publishing transaction ended\r\n\r\n"    
 
 module.exports = app
 

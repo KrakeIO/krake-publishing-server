@@ -1,12 +1,12 @@
-kson = require 'kson'
-request = require 'request'
-RdbHandler = require('krake-toolkit').data.rdb_handler
-PgHandler = require('krake-toolkit').data.pg_handler
-MongoHandler = require('krake-toolkit').data.mongo_schema_factory
+kson            = require 'kson'
+request         = require 'request'
+RdbHandler      = require '../helpers/rdb_handler'
+PgHandler       = require '../helpers/pg_handler'
+MongoHandler    = require '../helpers/mongo_schema_factory'
 
-rbd_handlers = {}
-mongo_handlers = {}
-pg_handlers = {}
+rbd_handlers    = {}
+mongo_handlers  = {}
+pg_handlers     = {}
 
 class NetworkPublisher
   
@@ -20,7 +20,6 @@ class NetworkPublisher
   # @params: data_object:Object
   # @params: callback:Function(message:string, message_type:string)
   publish: (options, data_object, callback)->
-    
     # Writes record into MySql
     if options && options.rdbParams
       rdbParams = options.rdbParams
@@ -39,6 +38,7 @@ class NetworkPublisher
     # Writes record into Postgresql HStore
     if options && options.pgParams
       console.log '[NETWORK_PUBLISHER] Publishing to PostGresql'
+
       pgParams = options.pgParams
       pgParams.origin_url = options.origin_url
       pgParams.columns = options.rawSchema?.columns || options.columns
@@ -49,8 +49,9 @@ class NetworkPublisher
       pg_key = pgParams.host + '_' + pgParams.database + '_' + pgParams.tableName
       if !pg_handlers[pg_key] 
         pg_handlers[pg_key] = new PgHandler pgParams
-      pg_handlers[pg_key].publish data_object
-      callback && callback 'Publisher : Published ' + kson.stringify(data_object) + ' to Data Server', 'information'
+
+      pg_handlers[pg_key].publish data_object, ()=>
+        callback && callback 'Publisher : Published ' + kson.stringify(data_object) + ' to Data Server', 'information'
 
     # Writes record into MongoDb  
     if options && options.mongoParams
